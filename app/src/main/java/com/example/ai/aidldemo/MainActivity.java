@@ -12,7 +12,9 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         }
         final TextView show = (TextView) findViewById(R.id.show);
+        show.setMovementMethod(ScrollingMovementMethod.getInstance());
         findViewById(R.id.get).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
