@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +27,6 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     ITest iTest;
 
-
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             iTest = null;
-            Toast.makeText(MainActivity.this, "成功关闭服务", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "服务已关闭", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (BuildConfig.DEBUG && Build.VERSION_CODES.GINGERBREAD <= Build.VERSION.SDK_INT) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
+        }
         final TextView show = (TextView) findViewById(R.id.show);
         findViewById(R.id.get).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override
